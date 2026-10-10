@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CrisisGrid AI – Urban Disaster & Civic Intelligence Platform</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{--bg:#f2f5f8;--panel:#fff;--ink:#12263a;--mute:#5d7084;--line:#dbe3ea;--brand:#0e5a8a;--brand2:#e8f1f8;--ok:#2a9d6a;--warn:#e09f1f;--bad:#d6452f;--sev:#8e1b3a;--side:#0d2438;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1722;--panel:#13222f;--ink:#e6eef5;--mute:#93a6b8;--line:#243645;--brand:#4aa3df;--brand2:#16303f;--side:#08121b}}
+:root[data-theme="dark"]{--bg:#0b1722;--panel:#13222f;--ink:#e6eef5;--mute:#93a6b8;--line:#243645;--brand:#4aa3df;--brand2:#16303f;--side:#08121b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+aside{background:var(--side);color:#cfe0ee;padding:20px 14px;position:sticky;top:0;height:100vh;overflow:auto}
+aside h1{font-size:19px;margin:0 8px 2px;color:#fff;letter-spacing:.2px}
+aside p{margin:0 8px 20px;font-size:12px;color:#8fb0c9}
+nav button{display:flex;gap:10px;align-items:center;width:100%;background:none;border:0;color:inherit;font:inherit;padding:10px 12px;border-radius:8px;cursor:pointer;text-align:left}
+nav button:hover{background:#ffffff14}nav button.on{background:#ffffff22;color:#fff;font-weight:600}
+nav button:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.live{margin:22px 8px 0;font-size:12px;padding:10px;border:1px solid #ffffff2a;border-radius:8px}
+main{padding:12px 26px 40px;min-width:0}
+header.top{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:flex-start;margin-bottom:18px}
+h2{margin:0;font-size:23px}h3{margin:0 0 10px;font-size:16px}
+.sub{color:var(--mute);margin:2px 0 0;max-width:70ch}
+.rain{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:260px}
+.rain label{font-size:12px;color:var(--mute);display:flex;justify-content:space-between}
+.rain input{width:100%}
+.view{display:block;margin-bottom:44px;scroll-margin-top:96px}
+.sechead{margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--line)}
+header.top{position:sticky;top:0;z-index:10;background:var(--bg);padding:10px 0;margin-bottom:14px;justify-content:flex-end;border-bottom:1px solid var(--line)}
+html{scroll-behavior:smooth}
+.grid{display:grid;gap:14px}.g4{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}.g2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px}
+.kpi b{display:block;font-size:28px;line-height:1.1}.kpi span{color:var(--mute);font-size:13px}
+.tag{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:600;color:#fff;white-space:nowrap}
+.low{background:var(--ok)}.med{background:var(--warn);color:#2b1d00}.high{background:var(--bad)}.sev{background:var(--sev)}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}.tbl th{text-align:left;color:var(--mute);font-weight:600;font-size:12px;padding:8px;border-bottom:1px solid var(--line)}
+.tbl td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+.scroll{overflow-x:auto}
+label.f{display:block;font-size:13px;font-weight:600;margin:12px 0 4px}
+input[type=text],select,textarea{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit}
+textarea{min-height:84px;resize:vertical}
+.btn{background:var(--brand);color:#fff;border:0;border-radius:8px;padding:10px 16px;font:inherit;font-weight:600;cursor:pointer}
+.btn.alt{background:var(--brand2);color:var(--brand)}.btn:hover{filter:brightness(1.08)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.drop{border:2px dashed var(--line);border-radius:10px;padding:16px;text-align:center;color:var(--mute);cursor:pointer;display:block}
+.drop img{max-width:100%;max-height:190px;border-radius:8px}
+.ai{background:var(--brand2);border-radius:10px;padding:12px;margin-top:12px;font-size:14px}
+.bar{height:9px;background:var(--line);border-radius:5px;overflow:hidden}.bar i{display:block;height:100%;background:var(--brand)}
+.steps{display:flex;gap:0;margin:8px 0}.steps div{flex:1;font-size:11px;color:var(--mute);text-align:center;border-top:4px solid var(--line);padding-top:4px}.steps .d{border-color:var(--ok);color:var(--ink)}
+.mapwrap{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+svg text{font-family:inherit}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--mute);padding:8px 12px}.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+.sens{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+.alert{border-left:4px solid var(--bad);background:var(--panel);padding:10px 14px;border-radius:6px;margin-bottom:8px;border:1px solid var(--line);border-left-width:4px}
+.small{font-size:12px;color:var(--mute)}
+@media(max-width:860px){.app{grid-template-columns:1fr}aside{position:sticky;top:0;z-index:20;height:auto;max-height:none}.live{display:none}header.top{top:0;position:static}nav{display:flex;flex-wrap:wrap;gap:4px}nav button{width:auto}main{padding:16px}}
+.acct{margin:12px 8px 0;font-size:12px;padding:10px;border:1px solid #ffffff2a;border-radius:8px}
+:root{color-scheme:light dark}:root[data-theme="light"]{color-scheme:light}:root[data-theme="dark"]{color-scheme:dark}
+#theme{white-space:nowrap}
+a{color:var(--brand)}
+input[type=number]{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit}
+.chip{background:var(--brand2);color:var(--brand);border:1px solid var(--line);border-radius:99px;padding:7px 14px;font:inherit;font-weight:600;cursor:pointer}.chip.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+.banner{border-radius:10px;padding:12px 16px;margin-bottom:16px;color:#fff;display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.banner.adv{background:var(--warn);color:#2b1d00}.banner.warn{background:var(--bad)}.banner.evac{background:var(--sev)}
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.flow div{border:1px solid var(--line);border-radius:10px;padding:10px;font-size:13px;color:var(--mute)}.flow b{display:block;color:var(--brand);margin-bottom:2px}
+.big{font-size:30px;font-weight:700;line-height:1.1}
+</style>
+<script>try{var t=localStorage.getItem("cg-theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+</head>
+<body>
+<div class="app">
+<aside>
+<h1>CrisisGrid AI</h1><p>AI-powered urban disaster management & civic intelligence</p>
+<nav id="nav">
+<button data-v="dash" class="on">Command overview</button>
+<button data-v="fund">Flood alert & relief fund</button>
+<button data-v="report">Report an issue</button>
+<button data-v="comp">Complaints & priority</button>
+<button data-v="map">Hazard map & routes</button>
+<button data-v="res">Hospitals & shelters</button>
+<button data-v="infra">Infrastructure monitor</button>
+</nav>
+<div class="live"><b>Demo data</b><br>Simulated city, sensors and complaints. Move the rainfall slider to see risk, routes and priorities update.</div>
+<div class="acct" id="acct"><b id="who">Demo mode</b><br><span id="role">Not signed in. Changes are not saved.</span></div>
+</aside>
+<main>
+<header class="top">
+<button class="btn alt" id="theme" type="button"></button>
+<div class="rain"><label for="rain"><span>Forecast rainfall, next 24 h</span><b id="rainv">40 mm</b></label><input type="range" id="rain" min="0" max="200" value="40"><div class="small" id="rainl"></div><label class="small" style="display:flex;gap:6px;align-items:center;margin-top:4px"><input type="checkbox" id="wet" style="width:auto"> Wet soil (heavy rain in the last 5 days)</label></div>
+</header>
+<div id="banner"></div>
+
+<section class="view" id="dash">
+<div class="sechead"><h2>Command overview</h2><p class="sub">City-wide view of civic complaints, flood risk, emergency resources and infrastructure health.</p></div>
+<div class="grid g4" id="kpis"></div>
+<div class="grid g2" style="margin-top:14px">
+<div class="card"><h3>Active alerts</h3><div id="alerts"></div></div>
+<div class="card"><h3>Complaints by category</h3><div id="cats"></div></div>
+</div>
+<div class="card" style="margin-top:14px"><h3>Top priority complaints</h3><div class="scroll" id="topc"></div></div>
+</section>
+
+<section class="view" id="fund">
+<div class="sechead"><h2>Flood alert & relief fund</h2><p class="sub">Authorities send a flood alert to the affected localities. Residents who get it can choose to give a small amount. Every contribution goes into one public relief fund.</p></div>
+<div class="card"><h3>How the funding works</h3>
+<div class="flow">
+<div><b>1. Alert</b>Authority issues a flood alert for chosen localities and sets a fund target.</div>
+<div><b>2. Notify</b>Residents of those localities see the alert and a suggested small amount.</div>
+<div><b>3. Contribute</b>Each person gives ₹1 to ₹500, voluntarily, by UPI, card or net banking.</div>
+<div><b>4. Pool</b>All contributions for that alert go into a single relief fund with a live total.</div>
+<div><b>5. Allocate</b>The fund is split between relief, pumps and drains, shelters and rescue.</div>
+<div><b>6. Report</b>Receipts and totals stay visible in the public ledger below.</div>
+</div></div>
+<div class="grid g2" style="margin-top:14px">
+<div class="card"><h3>Citizen: alert inbox & contribution</h3>
+<label class="f" for="myloc" style="margin-top:0">My locality</label><select id="myloc"></select>
+<div id="myalert" style="margin-top:12px"></div>
+<label class="f" for="camt">Amount in ₹ (voluntary)</label>
+<div class="row" id="chips"><button class="chip" data-a="10" type="button">₹10</button><button class="chip" data-a="20" type="button">₹20</button><button class="chip" data-a="50" type="button">₹50</button><button class="chip" data-a="100" type="button">₹100</button><input type="number" id="camt" min="1" max="500" step="1" value="20" style="width:110px" aria-label="Custom amount in rupees"></div>
+<label class="f" for="pm">Payment method</label><select id="pm"><option>UPI</option><option>Debit / credit card</option><option>Net banking</option></select>
+<div class="row" style="margin-top:14px"><button class="btn" id="pay" type="button">Contribute to relief fund</button></div>
+<div class="ai" id="payout" style="display:none"></div>
+<p class="small">Demo checkout: no real money moves. A live version needs a government-approved payment gateway and a notified relief-fund account.</p></div>
+<div class="card"><h3>Authority: issue a flood alert</h3>
+<div id="authnote" class="small" style="display:none">Only authorities can issue alerts. You are signed in as a citizen.</div>
+<div id="authform">
+<div class="ai" id="sugg" style="margin-top:0"></div>
+<label class="f">Localities to alert</label><div id="alocs" class="row" style="gap:6px 14px"></div>
+<button class="btn alt" id="ause" type="button" style="margin-top:8px">Select the high-risk localities</button>
+<label class="f" for="alvl">Alert level</label><select id="alvl"><option value="Advisory">Advisory: be prepared</option><option value="Warning" selected>Warning: flooding likely</option><option value="Evacuate">Evacuate now</option></select>
+<label class="f" for="amsg">Message to residents</label><textarea id="amsg" maxlength="300" placeholder="Leave blank to use the standard flood message"></textarea>
+<div class="row" style="align-items:flex-end"><div style="flex:1;min-width:130px"><label class="f" for="aamt">Suggested contribution</label><select id="aamt"><option>10</option><option selected>20</option><option>50</option><option>100</option></select></div>
+<div style="flex:1;min-width:130px"><label class="f" for="atgt">Fund target in ₹</label><input type="number" id="atgt" min="10000" step="10000" value="500000"></div></div>
+<div class="row" style="margin-top:14px"><button class="btn" id="asend" type="button">Send alert</button><button class="btn alt" id="aclose" type="button">Close alert</button></div>
+<div class="small" id="aout" style="margin-top:8px"></div>
+</div></div>
+</div>
+<div class="grid g2" style="margin-top:14px">
+<div class="card"><h3>Relief fund</h3><div id="fundkpi"></div></div>
+<div class="card"><h3>Where the money goes</h3><div id="alloc"></div></div>
+</div>
+<div class="card" style="margin-top:14px"><h3>Public contribution ledger</h3><div class="scroll" id="ledger"></div><p class="small">The ledger shows receipt, locality and amount only. No names are shown.</p></div>
+</section>
+
+<section class="view" id="report">
+<div class="sechead"><h2>Report an issue</h2><p class="sub">Citizens add a photo and location. AI classifies the problem and routes it to the right department.</p></div>
+<div class="grid g2">
+<div class="card">
+<h3>Report a civic issue</h3>
+<label class="drop" id="dropl">Tap to add a photo of the problem<input type="file" accept="image/*" hidden></label>
+<label class="f" for="desc">What is the problem?</label>
+<textarea id="desc" placeholder="e.g. Large pothole near the bus stand, water collecting in it"></textarea>
+<div class="small" id="cathint" style="margin-top:4px"></div>
+<label class="f" for="loc">Location</label>
+<div class="row"><select id="loc" style="flex:1"></select><button class="btn alt" id="gps" type="button">Use my GPS</button></div>
+<div class="small" id="gpsout" style="margin-top:4px"></div>
+<div class="row" style="margin-top:14px"><button class="btn" id="submit" type="button">Submit report</button><span class="small">Your photo and location go straight to the AI classifier.</span></div>
+</div>
+<div class="card"><h3>AI classification result</h3><div id="aires" class="small">Submit a report to see the detected category, severity, confidence and assigned department.</div>
+<h3 style="margin-top:20px">Track a complaint</h3>
+<select id="trackSel"></select><div id="track"></div></div>
+</div>
+</section>
+
+<section class="view" id="comp">
+<div class="sechead"><h2>Complaints & priority</h2><p class="sub">Authorities see every complaint ranked by urgency and update its status.</p></div>
+<div class="card"><div class="row" style="justify-content:space-between"><h3>Complaint queue, ranked by priority</h3>
+<select id="filt" style="width:auto"><option value="">All categories</option></select></div>
+<p class="small">Priority = severity (50%) + flood risk at the location (30%) + duplicate reports (20%). It rises when rainfall rises.</p>
+<div class="scroll" id="ctable"></div></div>
+</section>
+
+<section class="view" id="map">
+<div class="sechead"><h2>Hazard map & routes</h2><p class="sub">Predicted flood risk by locality, with safe routes for emergency vehicles and evacuation.</p></div>
+<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">
+<div class="card" style="grid-column:span 1">
+<h3>Safe route finder</h3>
+<label class="f" for="o">Start (click a junction on the map too)</label><select id="o"></select>
+<label class="f" for="d">Destination</label><select id="d"></select>
+<label class="f" for="mode">Vehicle</label>
+<select id="mode"><option value="amb">Ambulance / emergency (tolerates more water)</option><option value="car">Citizen evacuation (avoid flooded roads)</option></select>
+<div class="row" style="margin-top:12px"><label class="small"><input type="checkbox" id="lc" checked> Show complaints</label><label class="small"><input type="checkbox" id="lf" checked> Show facilities</label></div>
+<div class="ai" id="routeout"></div>
+</div>
+<div class="mapwrap" style="grid-column:span 2;min-width:300px"><svg id="svg" viewBox="0 0 800 460" width="100%" role="img" aria-label="City hazard map"></svg>
+<div class="legend"><span><i style="background:var(--ok)"></i>Low risk</span><span><i style="background:var(--warn)"></i>Moderate</span><span><i style="background:var(--bad)"></i>High</span><span><i style="background:var(--sev)"></i>Severe / impassable</span><span>H = hospital, S = shelter, A = ambulance depot, ! = complaint</span></div></div>
+</div></section>
+
+<section class="view" id="res">
+<div class="sechead"><h2>Hospitals & shelters</h2><p class="sub">Available beds and shelter space, with the nearest safe access route.</p></div>
+<div class="grid g2"><div class="card"><h3>Hospitals</h3><div id="hosp"></div></div><div class="card"><h3>Relief shelters</h3><div id="shel"></div></div></div>
+<p class="small">Capacity is simulated; shelter occupancy grows with forecast rainfall.</p>
+</section>
+
+<section class="view" id="infra">
+<div class="sechead"><h2>Infrastructure monitor</h2><p class="sub">Live sensor readings and predicted flood risk for every locality.</p></div>
+<div class="grid g2"><div class="card"><h3>Water-level sensors</h3><div id="wl"></div></div>
+<div class="card"><h3>Infrastructure health</h3><div id="ih"></div></div></div>
+<div class="card" style="margin-top:14px"><h3>Flood-risk prediction by locality</h3><div class="scroll" id="rt"></div></div>
+<div class="card" style="margin-top:14px"><h3>How the flood risk is calculated</h3>
+<p class="small">Forecast rainfall → runoff (SCS Curve Number) → peak flow (Rational Method, with Kirpich time of concentration) → drain capacity (Manning's equation) → risk = peak flow ÷ capacity. Low below 50%, Moderate 50–80%, High 80–100%, Severe above 100% of capacity (overflow likely). The percentage on every risk badge is peak flow as a share of drain capacity. Wet soil raises each curve number by 12%.</p>
+<div class="scroll" id="fm"></div>
+<p class="small">Informational only. Curve numbers, catchment areas and drain sizes are demo assumptions and must be calibrated against past floods before real use. For official warnings see <a href="https://mausam.imd.gov.in/" target="_blank" rel="noopener">IMD</a>, <a href="https://cwc.gov.in/" target="_blank" rel="noopener">CWC</a> and your state disaster management authority.</p></div>
+<div class="card" style="margin-top:14px"><h3>Return period (Gumbel)</h3>
+<label class="f" for="amax">Annual maximum 24 h rainfall in mm, one value per year (demo data, edit to use your own)</label>
+<input type="text" id="amax" value="68, 82, 91, 75, 110, 64, 97, 125, 88, 72, 104, 79, 93, 118, 85">
+<div id="gum" style="margin-top:12px"></div></div>
+</section>
+</main></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const N=[[80,90,"Gandhi Nagar",.3,.4],[230,70,"Market Road",.5,.6],[400,90,"City Centre",.4,.5],[570,70,"Tech Park",.7,.8],[720,110,"North Colony",.8,.7],[120,230,"River Bank",.1,.3],[290,220,"Old Town",.25,.35],[450,240,"Bus Stand",.35,.5],[610,230,"Lake View",.55,.6],[730,270,"Hill Estate",.9,.8],[90,390,"Low Ward",.05,.2],[260,380,"Station Road",.3,.45],[430,400,"Canal Side",.15,.3],[600,390,"East End",.6,.6]].map((a,i)=>({id:i,x:a[0],y:a[1],name:a[2],el:a[3],dr:a[4]}));
+const E=[[0,1],[1,2],[2,3],[3,4],[0,5],[1,6],[2,7],[3,8],[4,9],[5,6],[6,7],[7,8],[8,9],[5,10],[6,11],[7,12],[8,13],[10,11],[11,12],[12,13],[9,13]];
+const HOSP=[{n:2,name:"City General Hospital",beds:42,icu:6},{n:8,name:"Lake View Medical Centre",beds:25,icu:3},{n:13,name:"East End Trauma Care",beds:18,icu:2}];
+const SHEL=[{n:4,name:"Govt. School Shelter",cap:300},{n:9,name:"Hill Community Hall",cap:220},{n:1,name:"Market Road Town Hall",cap:180}];
+const DEPOT=10;
+const CATS={Pothole:{d:"Roads Dept.",k:["pothole","hole","crater"],s:.6},"Damaged road":{d:"Roads Dept.",k:["road","crack","damaged","broken"],s:.65},"Garbage overflow":{d:"Sanitation Dept.",k:["garbage","waste","trash","dump","litter"],s:.5},"Drainage blockage":{d:"Drainage & Sewerage",k:["drain","sewer","blocked","clog","manhole"],s:.8},"Streetlight fault":{d:"Electrical Dept.",k:["light","lamp","dark","streetlight"],s:.4},Waterlogging:{d:"Disaster Response Cell",k:["water","flood","waterlog","puddle"],s:.9},"Water supply problem":{x:1,d:"Water Supply Board",k:["supply","tap water","water tap","taps","pipeline","pipe","leak","drinking","no water","dirty water","contaminated","borewell","tanker"],s:.7},"Power outage / live wire":{x:1,d:"Electrical Dept.",k:["power","electric","outage","wire","transformer","shock","cable","short circuit","blackout","electric pole"],s:.75},"Fallen tree":{x:1,d:"Parks & Horticulture",k:["fallen","uprooted","branch","tree fell","fallen tree","tree branch","tree trunk","tree down"],s:.6},"Stray animals":{x:1,d:"Animal Control",k:["stray","dog","cattle","monkey","animal","buffalo","pig"],s:.45},"Broken footpath":{x:1,d:"Roads Dept.",k:["footpath","pavement","sidewalk","walkway","paving","broken footpath","uneven tiles"],s:.45},"Traffic signal fault":{x:1,d:"Traffic Police",k:["signal","traffic","zebra","crossing","red light","speed breaker"],s:.6},"Illegal parking & encroachment":{x:1,d:"Municipal Enforcement",k:["parking","parked","encroach","illegal","hawker","vendor","unauthorised","unauthorized","stall"],s:.35},"Noise & air pollution":{x:1,d:"Pollution Control Board",k:["noise","loud","pollution","smoke","burning","dust","fumes","speaker","honking"],s:.4},"Public toilet / sanitation":{x:1,d:"Sanitation Dept.",k:["toilet","restroom","urinal","latrine","washroom","public toilet","sanitation"],s:.5},"Mosquito & public health":{x:1,d:"Public Health Dept.",k:["mosquito","dengue","malaria","stagnant","fogging","pest","rats","breeding","infection","epidemic"],s:.65}};
+const STAGES=["Submitted","AI classified","Assigned","In progress","Resolved"];
+let C=[{id:"CIV-1041",cat:"Drainage blockage",n:10,sev:.8,dup:6,st:2,txt:"Storm drain choked with plastic"},{id:"CIV-1042",cat:"Pothole",n:7,sev:.6,dup:3,st:3,txt:"Deep pothole near bus stand"},{id:"CIV-1043",cat:"Waterlogging",n:5,sev:.9,dup:9,st:1,txt:"Knee-deep water on riverside road"},{id:"CIV-1044",cat:"Garbage overflow",n:6,sev:.5,dup:2,st:2,txt:"Bins overflowing in old market"},{id:"CIV-1045",cat:"Streetlight fault",n:12,sev:.4,dup:1,st:3,txt:"Four lights out on canal road"},{id:"CIV-1046",cat:"Damaged road",n:3,sev:.55,dup:2,st:0,txt:"Cracked carriageway at tech park gate"},{id:"CIV-1047",cat:"Drainage blockage",n:11,sev:.75,dup:4,st:4,txt:"Manhole cover missing"}];
+let DB=null,UID=null,CAN_EDIT=true,CAN_WRITE=true,SEEDS=[],REPORTS=new Map(),STATUS={};const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));let rain=40,mode="amb",pathNodes=[],origin=DEPOT,dest=2,img=null,gpsNode=null;
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+/* ---- flood model: rainfall -> SCS-CN runoff -> Rational peak flow -> Manning drain capacity -> risk ---- */
+/* per locality: [curve number, catchment area (ha), flow length (m)]  (demo assumptions, calibrate for real use) */
+const HP=[[85,60,1200],[92,45,900],[95,70,1300],[90,80,1500],[80,90,1800],[86,55,1000],[93,50,900],[95,40,700],[82,85,1600],[76,100,2000],[88,65,1100],[92,60,1200],[86,50,1000],[83,75,1500]];
+const KNOTS=[[0,0],[.5,.3],[.8,.55],[1,.8],[1.25,1]];   /* ratio 0.5 / 0.8 / 1.0 = Low / Moderate / High limits */
+const toScore=r=>{for(let k=1;k<KNOTS.length;k++)if(r<=KNOTS[k][0]){const[a,b]=KNOTS[k-1],[c,d]=KNOTS[k];return b+(d-b)*(r-a)/(c-a)}return 1};
+let WET=false,_mk="",_mv=null;
+function flood(i){const n=N[i],P=rain,[cn0,A,L]=HP[i],CN=WET?Math.min(98,cn0*1.12):cn0;
+const S=25400/CN-254,Ia=.2*S,Q=P>Ia?(P-Ia)**2/(P-Ia+S):0;                 /* SCS Curve Number runoff (mm) */
+const sl=.003+.012*n.el,tc=Math.max(10,.0195*L**.77*sl**-.385);              /* Kirpich time of concentration (min) */
+const inten=P*(tc/1440)**(1/3)/(tc/60),C=P>0?Q/P:0,Qp=.00278*C*inten*A;     /* Rational Method peak flow (m3/s) */
+const b=1.6+3*n.dr,y=.8+n.dr,ar=b*y,R=ar/(b+2*y),nn=.03-.015*n.dr;           /* drain: rectangular channel */
+const Qcap=1/nn*ar*R**(2/3)*Math.sqrt(sl);                                   /* Manning capacity (m3/s) */
+const ratio=Qp/Qcap;return{Q,tc,Qp,Qcap,ratio,score:toScore(ratio)}}
+const FM=()=>{const k=rain+"|"+WET;if(k!==_mk){_mk=k;_mv=N.map((n,i)=>flood(i))}return _mv};
+const risk=i=>FM()[i].score,rt=i=>FM()[i].ratio;
+$("#wet").onchange=e=>{WET=e.target.checked;render()};
+const cls=r=>r<.3?["Low","low","var(--ok)"]:r<.55?["Moderate","med","var(--warn)"]:r<.8?["High","high","var(--bad)"]:["Severe","sev","var(--sev)"];
+const tag=(r,q)=>{const c=cls(r),v=q===undefined?r:q;return `<span class="tag ${c[1]}">${c[0]} ${Math.round(v*100)}%</span>`};const tg=i=>tag(risk(i),rt(i));
+const prio=c=>Math.round(100*(.5*c.sev+.3*risk(c.n)+.2*clamp(c.dup/8)));
+const pTag=p=>`<span class="tag ${p>=70?"sev":p>=55?"high":p>=40?"med":"low"}">${p}</span>`;
+const dist=(a,b)=>Math.hypot(N[a].x-N[b].x,N[a].y-N[b].y);
+
+/* routing */
+function route(a,b){const lim=mode==="amb"?.88:.62,adj=N.map(()=>[]);
+E.forEach(([u,v])=>{const r=Math.max(risk(u),risk(v));if(r>lim)return;const w=dist(u,v)*(1+3*(risk(u)+risk(v))/2);adj[u].push([v,w]);adj[v].push([u,w])});
+const D=N.map(()=>1e9),P=N.map(()=>-1),Q=new Set(N.map(n=>n.id));D[a]=0;
+while(Q.size){let u=[...Q].reduce((m,x)=>D[x]<D[m]?x:m);if(D[u]>=1e9)break;Q.delete(u);if(u===b)break;adj[u].forEach(([v,w])=>{if(D[u]+w<D[v]){D[v]=D[u]+w;P[v]=u}})}
+if(D[b]>=1e9)return null;const p=[];for(let x=b;x!==-1;x=P[x])p.unshift(x);return p}
+
+/* views */
+$("#nav").onclick=e=>{const b=e.target.closest("button");if(!b)return;$$("#nav button").forEach(x=>x.classList.toggle("on",x===b));document.getElementById(b.dataset.v).scrollIntoView({behavior:"smooth",block:"start"})};
+if("IntersectionObserver" in window){const io=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting)$$("#nav button").forEach(x=>x.classList.toggle("on",x.dataset.v===en.target.id))})},{rootMargin:"-20% 0px -70% 0px"});$$(".view").forEach(v=>io.observe(v))}
+$("#rain").oninput=e=>{rain=+e.target.value;render()};
+$("#mode").onchange=e=>{mode=e.target.value;render()};
+$("#o").onchange=e=>{origin=+e.target.value;render()};$("#d").onchange=e=>{dest=+e.target.value;render()};
+$("#lc").onchange=$("#lf").onchange=()=>drawMap();
+$("#cathint").textContent="Any civic problem can be reported: "+Object.keys(CATS).join(" · ")+".";
+const opts=(sel,f)=>{$(sel).innerHTML=N.map(n=>`<option value="${n.id}">${n.name}</option>`).join("")};
+opts("#loc");opts("#o");opts("#d");$("#o").value=origin;$("#d").value=dest;
+$("#filt").innerHTML+=Object.keys(CATS).map(c=>`<option>${c}</option>`).join("");$("#filt").onchange=()=>tableC();
+
+function render(){const r=rain;$("#rainv").textContent=r+" mm";$("#rainl").textContent=r<30?"Light rain, normal operations":r<80?"Moderate rain, watch low-lying wards":r<140?"Heavy rain, waterlogging likely":"Extreme rain, flooding expected";
+kpis();alerts();fundUI();cats();tableTop();tableC();drawMap();resources();infra();trackSel()}
+
+function kpis(){const open=C.filter(c=>c.st<4).length,hi=N.filter(n=>risk(n.id)>=.55).length,blk=E.filter(([u,v])=>Math.max(risk(u),risk(v))>.62).length,beds=HOSP.reduce((s,h)=>s+h.beds,0);
+$("#kpis").innerHTML=[["Open complaints",open],["High-risk localities",hi+" of "+N.length],["Roads unsafe for citizens",blk+" of "+E.length],["Free hospital beds",beds],["Avg. resolution time","2.4 days"]].map(k=>`<div class="card kpi"><b>${k[1]}</b><span>${k[0]}</span></div>`).join("")}
+function alerts(){const hi=N.filter(n=>risk(n.id)>=.55).sort((a,b)=>risk(b.id)-risk(a.id));
+$("#alerts").innerHTML=offAlert()+(hi.length?hi.slice(0,4).map(n=>`<div class="alert"><b>${n.name}</b> ${tg(n.id)}<div class="small">Predicted waterlogging. ${risk(n.id)>=.8?"Evacuation advisory recommended.":"Pre-position pumps and clear drains."}</div></div>`).join(""):`<div class="small">No localities above moderate risk at ${rain} mm. Increase the rainfall slider to simulate a storm.</div>`)}
+function cats(){const m={};C.forEach(c=>m[c.cat]=(m[c.cat]||0)+1);const mx=Math.max(1,...Object.values(m));$("#cats").innerHTML=Object.entries(m).map(([k,v])=>`<div style="margin-bottom:10px"><div class="row" style="justify-content:space-between"><span>${k}</span><b>${v}</b></div><div class="bar"><i style="width:${v/mx*100}%"></i></div></div>`).join("")}
+const sorted=()=>[...C].sort((a,b)=>prio(b)-prio(a));
+function tableTop(){$("#topc").innerHTML=tbl(sorted().filter(c=>c.st<4).slice(0,4),false)}
+function tableC(){const f=$("#filt").value;$("#ctable").innerHTML=tbl(sorted().filter(c=>!f||c.cat===f),CAN_EDIT)}
+function tbl(L,edit){return `<table class="tbl"><tr><th>ID</th><th>Issue</th><th>Location</th><th>Department</th><th>Priority</th><th>Status</th></tr>${L.map(c=>`<tr><td>${c.id}</td><td><b>${c.cat}</b><div class="small">${esc(c.txt)}${c.dup>1?` · ${c.dup} similar reports`:""}</div></td><td>${N[c.n].name}<div>${tg(c.n)}</div></td><td>${CATS[c.cat].d}</td><td>${pTag(prio(c))}</td><td>${edit?`<select data-id="${c.id}" class="stsel" style="width:auto">${STAGES.map((s,i)=>`<option value="${i}" ${i===c.st?"selected":""}>${s}</option>`).join("")}</select>`:STAGES[c.st]}</td></tr>`).join("")}</table>`}
+document.addEventListener("change",async e=>{if(e.target.classList.contains("stsel")){const id=e.target.dataset.id,st=+e.target.value;if(DB){try{await DB.doc("status/"+id).set({st});STATUS[id]=st;rebuild()}catch(err){alert("Could not update status.")}}else C.find(c=>c.id===id).st=st;render()}});
+
+/* map */
+function drawMap(){pathNodes=origin===dest?[]:(route(origin,dest)||[]);let s=`<rect width="800" height="460" fill="var(--bg)"/><path d="M0 300 Q200 250 380 320 T800 330 L800 345 Q600 360 380 335 T0 315Z" fill="#4aa3df" opacity=".35"/><text x="640" y="352" font-size="11" fill="var(--mute)">Canal</text>`;
+N.forEach(n=>{const r=risk(n.id),c=cls(r)[2];s+=`<circle cx="${n.x}" cy="${n.y}" r="${28+r*34}" fill="${c}" opacity="${.12+r*.28}"/>`});
+E.forEach(([u,v])=>{const r=Math.max(risk(u),risk(v)),blocked=r>(mode==="amb"?.88:.62);s+=`<line x1="${N[u].x}" y1="${N[u].y}" x2="${N[v].x}" y2="${N[v].y}" stroke="${blocked?"var(--bad)":"var(--mute)"}" stroke-width="${blocked?3:5}" ${blocked?'stroke-dasharray="6 5"':""} opacity="${blocked?1:.45}"/>`});
+if(pathNodes.length>1)s+=`<polyline fill="none" stroke="#1f9d55" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" points="${pathNodes.map(i=>N[i].x+","+N[i].y).join(" ")}"/>`;
+N.forEach(n=>{s+=`<g class="nd" data-i="${n.id}" style="cursor:pointer"><circle cx="${n.x}" cy="${n.y}" r="9" fill="var(--panel)" stroke="${cls(risk(n.id))[2]}" stroke-width="4"/><text x="${n.x}" y="${n.y+24}" text-anchor="middle" font-size="11" fill="var(--ink)">${n.name}</text></g>`});
+if($("#lf").checked){HOSP.forEach(h=>s+=badge(h.n,"H","#d6452f",-1));SHEL.forEach(h=>s+=badge(h.n,"S","#2a9d6a",1));s+=badge(DEPOT,"A","#0e5a8a",1)}
+if($("#lc").checked)C.filter(c=>c.st<4).forEach((c,i)=>s+=`<g><circle cx="${N[c.n].x+18}" cy="${N[c.n].y-16-(i%2)*4}" r="8" fill="#e09f1f"/><text x="${N[c.n].x+18}" y="${N[c.n].y-12-(i%2)*4}" text-anchor="middle" font-size="11" font-weight="700" fill="#2b1d00">!</text></g>`);
+s+=`<circle cx="${N[origin].x}" cy="${N[origin].y}" r="14" fill="none" stroke="#0e5a8a" stroke-width="3"/><circle cx="${N[dest].x}" cy="${N[dest].y}" r="14" fill="none" stroke="#1f9d55" stroke-width="3"/>`;
+$("#svg").innerHTML=s;$$(".nd").forEach(g=>g.onclick=()=>{origin=+g.dataset.i;$("#o").value=origin;render()});
+const out=$("#routeout");
+if(origin===dest)out.textContent="Start and destination are the same.";
+else if(!pathNodes.length)out.innerHTML=`<b>No safe route.</b> Every road to ${N[dest].name} is flooded. Switch to emergency mode, pick another destination, or lower the rainfall.`;
+else{let L=0;for(let i=1;i<pathNodes.length;i++)L+=dist(pathNodes[i-1],pathNodes[i]);const km=(L/60).toFixed(1),mx=Math.max(...pathNodes.map(risk)),mq=Math.max(...pathNodes.map(rt)),min=Math.round(km/(mode==="amb"?40:25)*60*(1+mx));
+out.innerHTML=`<b>Safe route found</b><br>${pathNodes.map(i=>N[i].name).join(" → ")}<div class="small" style="margin-top:6px">${km} km · about ${min} min · worst flood risk on route ${tag(mx,mq)}</div>`;
+}}
+function badge(n,t,c,dy){const x=N[n].x-(dy<0?0:0),y=N[n].y+(dy<0?-22:-22);return `<g><rect x="${N[n].x-30}" y="${N[n].y-30}" width="18" height="18" rx="4" fill="${c}"/><text x="${N[n].x-21}" y="${N[n].y-17}" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">${t}</text></g>`}
+
+/* resources */
+function resources(){const nearest=(n)=>{let best=null;[DEPOT].forEach(d=>{const p=route(d,n);if(p&&(!best||p.length<best.length))best=p});return best};
+$("#hosp").innerHTML=HOSP.map(h=>{const p=route(DEPOT,h.n);const r=risk(h.n);return `<div class="sens"><div><b>${h.name}</b><div class="small">${N[h.n].name} · ${h.beds} beds free · ${h.icu} ICU</div><div class="small">Ambulance access: ${p?`${p.length-1} road segments, open`:"<b style='color:var(--bad)'>cut off</b>"}</div></div>${tg(h.n)}</div>`}).join("");
+$("#shel").innerHTML=SHEL.map(h=>{const occ=Math.round(clamp(rain/180+risk(h.n)*.1)*h.cap*.9);const pct=occ/h.cap*100;return `<div style="padding:8px 0;border-bottom:1px solid var(--line)"><div class="row" style="justify-content:space-between"><b>${h.name}</b>${tg(h.n)}</div><div class="small">${N[h.n].name} · ${occ} of ${h.cap} places in use</div><div class="bar" style="margin-top:6px"><i style="width:${pct}%;background:${pct>75?"var(--bad)":"var(--brand)"}"></i></div></div>`}).join("")}
+
+/* infra */
+function infra(){fmTable();gumbel();const w=[10,5,12,6,0,13];$("#wl").innerHTML=w.map(i=>{const lvl=(risk(i)*2.4+.3).toFixed(1);return `<div class="sens"><span>${N[i].name} drain</span><span><b>${lvl} m</b> ${tg(i)}</span></div>`}).join("");
+const ih=[["Drainage capacity used",clamp(rain/150*.9+.15)],["Roads in poor condition",clamp(.12+rain/400)],["Streetlights working",clamp(.97-rain/900)],["Pumping stations online",clamp(1-rain/700)],["Open garbage points",clamp(.2+rain/500)]];
+$("#ih").innerHTML=ih.map(a=>`<div style="margin-bottom:10px"><div class="row" style="justify-content:space-between"><span>${a[0]}</span><b>${Math.round(a[1]*100)}%</b></div><div class="bar"><i style="width:${a[1]*100}%"></i></div></div>`).join("");
+$("#rt").innerHTML=`<table class="tbl"><tr><th>Locality</th><th>Elevation</th><th>Drainage</th><th>Predicted risk</th><th>Action</th></tr>${[...N].sort((a,b)=>risk(b.id)-risk(a.id)).map(n=>`<tr><td>${n.name}</td><td>${n.el<.3?"Low":n.el<.6?"Medium":"High"}</td><td>${n.dr<.4?"Weak":n.dr<.65?"Fair":"Good"}</td><td>${tg(n.id)}</td><td>${risk(n.id)>=.8?"Evacuate, deploy pumps":risk(n.id)>=.55?"Clear drains, alert residents":risk(n.id)>=.3?"Monitor":"None"}</td></tr>`).join("")}</table>`}
+
+/* citizen reporting */
+$("#dropl").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{img={src:r.result,name:f.name};$("#dropl").innerHTML=`<img src="${r.result}" alt="Uploaded photo"><div class="small">${esc(f.name)} (tap to change)</div><input type="file" accept="image/*" hidden>`};r.readAsDataURL(f)});
+$("#gps").onclick=()=>{const o=$("#gpsout");if(!navigator.geolocation){o.textContent="GPS not available. Choose a location from the list.";return}
+o.textContent="Finding your location…";navigator.geolocation.getCurrentPosition(p=>{gpsNode=Math.floor(Math.random()*N.length);$("#loc").value=gpsNode;o.textContent=`Location captured (${p.coords.latitude.toFixed(4)}, ${p.coords.longitude.toFixed(4)}). Matched to ${N[gpsNode].name} for this demo.`},()=>{o.textContent="Location blocked. Choose a locality from the list."})};
+function classify(t){t=t.toLowerCase();let best=null,sc=0,bl=0;for(const[k,v]of Object.entries(CATS)){const m=v.k.filter(w=>t.includes(w)),s=m.length,L=Math.max(0,...m.map(w=>w.length));if(s>sc||(v.x&&s===sc&&s>0&&L>bl)){sc=s;bl=L;best=k}}
+if(!best){best=img?"Damaged road":"Waterlogging";sc=0}return{cat:best,conf:Math.min(.97,.62+sc*.14+(img?.08:0))}}
+$("#submit").onclick=async()=>{const d=$("#desc").value.trim().slice(0,1000);if(!d&&!img){$("#aires").innerHTML="<b>Add a photo or a short description</b> so the AI can classify the issue.";return}
+const n=+$("#loc").value,{cat,conf}=classify(d+" "+(img?img.name:""));const id="CIV-"+(Math.max(1040,...C.map(x=>+x.id.slice(4)))+1);
+const dup=C.filter(c=>c.n===n&&c.cat===cat&&c.st<4);const sev=clamp(CATS[cat].s+(/deep|large|huge|danger|urgent|school|hospital/i.test(d)?.15:0));
+const c={id,cat,n,sev,dup:dup.length+1,st:1,txt:d||"Reported with photo"};if(!await persist(c))return;
+$("#aires").innerHTML=`<div class="row"><b style="font-size:17px">${cat}</b>${pTag(prio(c))}</div><div class="small" style="margin:4px 0 8px">Confidence ${Math.round(conf*100)}%</div><div class="bar"><i style="width:${conf*100}%"></i></div>
+<p style="margin:10px 0 2px">Assigned to <b>${CATS[cat].d}</b></p><p class="small" style="margin:0">Severity ${Math.round(sev*100)}% · flood risk at ${N[n].name}: ${cls(risk(n))[0]}${dup.length?` · matched ${dup.length} existing report${dup.length>1?"s":""} nearby, merged to raise priority`:""}. Complaint ID <b>${id}</b>.</p>`;
+$("#desc").value="";img=null;$("#dropl").innerHTML='Tap to add a photo of the problem<input type="file" accept="image/*" hidden>';render();$("#trackSel").value=id;showTrack()};
+function trackSel(){const v=$("#trackSel").value;$("#trackSel").innerHTML=C.map(c=>`<option value="${c.id}">${c.id} · ${c.cat}</option>`).join("");if(v)$("#trackSel").value=v;showTrack()}
+function showTrack(){const c=C.find(x=>x.id===$("#trackSel").value);if(!c){$("#track").innerHTML="";return}$("#track").innerHTML=`<div class="steps" style="margin-top:14px">${STAGES.map((s,i)=>`<div class="${i<=c.st?"d":""}">${s}</div>`).join("")}</div><div class="small">${esc(c.txt)} · ${N[c.n].name} · ${CATS[c.cat].d}</div>`}
+$("#trackSel").onchange=showTrack;
+
+/* ---- database + sign-in (claude.ai account) ---- */
+const validC=c=>c&&typeof c.id==="string"&&/^CIV-\d+$/.test(c.id)&&CATS[c.cat]&&Number.isInteger(c.n)&&c.n>=0&&c.n<N.length&&Number.isInteger(c.st)&&c.st>=0&&c.st<5&&typeof c.sev==="number"&&typeof c.dup==="number"&&typeof c.txt==="string";
+function rebuild(){const seen=new Set(),rep=[];REPORTS.forEach(d=>(Array.isArray(d.items)?d.items:[]).forEach(c=>{if(validC(c)&&!seen.has(c.id)){seen.add(c.id);rep.push(c)}}));
+rep.sort((a,b)=>(b.ts||0)-(a.ts||0));const seed=SEEDS.filter(c=>validC(c)&&!seen.has(c.id)).sort((a,b)=>(a.num||0)-(b.num||0));
+C=[...rep,...seed].map(c=>({id:c.id,cat:c.cat,n:c.n,sev:c.sev,dup:c.dup,txt:String(c.txt).slice(0,1000),st:c.id in STATUS?STATUS[c.id]:c.st}))}
+async function persist(c){if(!DB){C.unshift(c);return true}
+if(!UID||!CAN_WRITE){$("#aires").innerHTML="<b>You can view reports but not submit them.</b> Ask the site owner for contributor access.";return false}
+const mine=(REPORTS.get(UID)||{}).items||[],items=[...mine,{id:c.id,cat:c.cat,n:c.n,sev:c.sev,dup:c.dup,st:c.st,txt:c.txt,ts:Date.now()}];
+try{await DB.doc("reports/"+UID).set({items})}catch(e){$("#aires").innerHTML="<b>Could not save the report.</b> Please try again.";return false}
+REPORTS.set(UID,{items});rebuild();return true}
+const wait=(p,ms)=>Promise.race([p,new Promise(r=>setTimeout(()=>r(null),ms))]);
+async function init(){let user=null;
+try{if(window.claude){[DB,user]=await Promise.all([wait(claude.use("db"),4000),wait(claude.use("user"),4000)])}}catch(e){DB=null}
+if(!DB){render();return}
+const me=user?await user.me():null;UID=me&&me.id||null;CAN_EDIT=!!(user&&await user.canEdit());CAN_WRITE=(user?await user.can("data.write"):null)!==false;
+$("#who").textContent=(me&&me.name)||"Signed-in user";
+$("#role").textContent=CAN_EDIT?"Authority: can update complaint status":CAN_WRITE?"Citizen: can report and track issues":"Viewer: read only";
+C=[];
+const on=(path,fn)=>DB.collection(path).onSnapshot(s=>{fn(s);rebuild();render()},()=>{});
+on("complaints",s=>{SEEDS=s.docs.map(d=>({id:d.id,...d.data()}))});
+on("reports",s=>{REPORTS=new Map(s.docs.map(d=>[d.id,d.data()]))});
+on("alerts",s=>{const d=s.docs.find(x=>x.id==="current"),a=d?{id:d.data().id,...d.data()}:null;ALERT=validA(a)?{...a,active:a.active!==false}:null});
+on("pledges",s=>{PBU=new Map(s.docs.map(d=>[d.id,d.data()]));rebuildP()});
+on("status",s=>{STATUS={};s.docs.forEach(d=>{const st=d.data().st;if(Number.isInteger(st))STATUS[d.id]=st})});
+render()}
+function fmTable(){const rows=[...N].sort((a,b)=>rt(b.id)-rt(a.id));
+$("#fm").innerHTML=`<table class="tbl"><tr><th>Locality</th><th>Runoff</th><th>Time of concentration</th><th>Peak flow</th><th>Drain capacity</th><th>Peak flow ÷ capacity</th></tr>${rows.map(n=>{const f=FM()[n.id];return `<tr><td>${esc(n.name)}</td><td>${f.Q.toFixed(1)} mm</td><td>${Math.round(f.tc)} min</td><td>${f.Qp.toFixed(2)} m³/s</td><td>${f.Qcap.toFixed(2)} m³/s</td><td>${tg(n.id)}</td></tr>`}).join("")}</table>`}
+function gumbel(){const xs=$("#amax").value.split(/[,\s]+/).map(Number).filter(v=>isFinite(v)&&v>0),o=$("#gum");
+if(xs.length<5){o.innerHTML='<div class="small">Enter at least 5 yearly values.</div>';return}
+const m=xs.reduce((a,b)=>a+b)/xs.length,sd=Math.sqrt(xs.reduce((a,b)=>a+(b-m)**2,0)/(xs.length-1));
+const K=T=>-(Math.sqrt(6)/Math.PI)*(.5772+Math.log(Math.log(T/(T-1))));
+const Tof=x=>{const e=Math.exp(-((x-m)/sd)*Math.PI/Math.sqrt(6)-.5772);return 1/-Math.expm1(-e)};
+let line="";if(rain>0){const T=Tof(rain);line=`<p style="margin:10px 0 0">The ${rain} mm forecast is about a <b>${T<1.5?"once-a-year":"1-in-"+(T<10?T.toFixed(1):Math.round(T))+"-year"}</b> rainfall.</p>`}
+o.innerHTML=`<div class="small">${xs.length} years · mean ${m.toFixed(1)} mm · standard deviation ${sd.toFixed(1)} mm</div><div class="scroll"><table class="tbl"><tr><th>Return period</th>${[2,5,10,25,50,100].map(T=>`<th>${T} years</th>`).join("")}</tr><tr><td>24 h rainfall</td>${[2,5,10,25,50,100].map(T=>`<td><b>${(m+K(T)*sd).toFixed(0)} mm</b></td>`).join("")}</tr></table></div>${line}`}
+$("#amax").oninput=gumbel;
+
+/* ---- flood alert + relief fund ---- */
+const ALLOC=[["Food, water and medical relief",40],["Pumps, drain clearing and repairs",25],["Shelters and rescue operations",25],["Audit, reporting and payment costs",10]];
+const LV={Advisory:{c:"adv",t:"Advisory"},Warning:{c:"warn",t:"Warning"},Evacuate:{c:"evac",t:"Evacuate now"}};
+let ALERT=null,PL=[],PBU=new Map(),myLoc=0,lastAid=null;
+try{const s=localStorage.getItem("cg-loc");if(s!==null&&Number.isInteger(+s)&&+s>=0&&+s<N.length)myLoc=+s}catch(e){}
+const inr=v=>"₹"+Math.round(v).toLocaleString("en-IN");
+const fdt=t=>new Date(t).toLocaleString("en-IN",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
+const validA=a=>a&&typeof a.id==="string"&&LV[a.level]&&Array.isArray(a.nodes)&&a.nodes.every(i=>Number.isInteger(i)&&i>=0&&i<N.length)&&typeof a.amt==="number"&&typeof a.target==="number"&&typeof a.msg==="string"&&typeof a.ts==="number";
+const validP=p=>p&&typeof p.id==="string"&&typeof p.aid==="string"&&typeof p.amt==="number"&&p.amt>=1&&p.amt<=500&&Number.isInteger(p.n)&&p.n>=0&&p.n<N.length&&typeof p.ts==="number";
+function rebuildP(){PL=[];PBU.forEach(d=>(Array.isArray(d.items)?d.items:[]).forEach(p=>{if(validP(p))PL.push(p)}));PL.sort((a,b)=>b.ts-a.ts)}
+function offAlert(){if(!ALERT||!ALERT.active)return"";return `<div class="alert" style="border-left-color:var(--sev)"><b>Official flood alert · ${LV[ALERT.level].t}</b><div class="small">${ALERT.nodes.map(i=>N[i].name).join(", ")}. Voluntary relief contributions are open.</div></div>`}
+$("#myloc").innerHTML=N.map(n=>`<option value="${n.id}">${n.name}</option>`).join("");$("#myloc").value=myLoc;
+$("#alocs").innerHTML=N.map(n=>`<label class="small" style="display:flex;gap:5px;align-items:center"><input type="checkbox" class="alc" value="${n.id}" style="width:auto">${n.name}</label>`).join("");
+$("#myloc").onchange=e=>{myLoc=+e.target.value;try{localStorage.setItem("cg-loc",myLoc)}catch(err){}fundUI()};
+$("#chips").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;$("#camt").value=b.dataset.a;chipSync()};
+$("#camt").oninput=chipSync;
+function chipSync(){$$(".chip").forEach(b=>b.classList.toggle("on",b.dataset.a===String($("#camt").value)))}
+const hiNodes=()=>N.filter(n=>risk(n.id)>=.55).sort((a,b)=>risk(b.id)-risk(a.id));
+$("#ause").onclick=()=>{const h=new Set(hiNodes().map(n=>n.id));$$(".alc").forEach(c=>c.checked=h.has(+c.value));$("#aout").textContent=h.size?"":"No locality is at High or Severe risk at "+rain+" mm. Pick localities by hand."};
+function fundUI(){const act=!!(ALERT&&ALERT.active),inArea=act&&ALERT.nodes.includes(myLoc),names=act?ALERT.nodes.map(i=>N[i].name).join(", "):"";
+$("#banner").innerHTML=act?`<div class="banner ${LV[ALERT.level].c}" role="alert"><div><b>FLOOD ALERT · ${LV[ALERT.level].t}</b>${inArea?" · covers your locality":""}<div style="font-size:13px">${names}</div><div style="font-size:14px;margin-top:2px">${esc(ALERT.msg)}</div></div><button class="btn alt" id="bgo" type="button">Help the relief fund</button></div>`:"";
+const g=$("#bgo");if(g)g.onclick=()=>document.getElementById("fund").scrollIntoView({behavior:"smooth",block:"start"});
+$("#myalert").innerHTML=act?`<div class="ai" style="margin-top:0"><b>${inArea?"This alert covers your locality.":"Your locality is not in this alert."}</b><br>${esc(ALERT.msg)}<div class="small" style="margin-top:6px">${LV[ALERT.level].t} · issued ${fdt(ALERT.ts)} · covers ${names}. Suggested contribution ${inr(ALERT.amt)}, entirely voluntary.</div></div>`:`<div class="small">No active alert. When authorities issue one for your area it shows here and at the top of every page.</div>`;
+if(ALERT&&ALERT.id!==lastAid){lastAid=ALERT.id;$("#camt").value=ALERT.amt}chipSync();
+$("#pay").disabled=!act;$("#pay").style.opacity=act?1:.5;
+$("#authform").style.display=CAN_EDIT?"":"none";$("#authnote").style.display=CAN_EDIT?"none":"";
+const h=hiNodes();$("#sugg").innerHTML=`<b>Flood model at ${rain} mm:</b> ${h.length?h.map(n=>n.name).join(", ")+` ${h.length>1?"are":"is"} at High or Severe risk.`:"no locality is at High or Severe risk."}<div class="small" style="margin-top:4px">${act?`An alert is live (${LV[ALERT.level].t}, ${ALERT.nodes.length} localities). Sending a new one replaces it and starts a new fund.`:"No alert is live."}</div>`;
+$("#aclose").disabled=!act;$("#aclose").style.opacity=act?1:.5;
+const F=ALERT?PL.filter(p=>p.aid===ALERT.id):[],tot=F.reduce((s,p)=>s+p.amt,0),pct=ALERT?clamp(tot/ALERT.target)*100:0;
+if(!ALERT){$("#fundkpi").innerHTML='<div class="small">The fund opens with the first flood alert. Nothing has been raised yet.</div>'}
+else{const by={};F.forEach(p=>by[p.n]=(by[p.n]||0)+p.amt);const top=Object.entries(by).sort((a,b)=>b[1]-a[1]).slice(0,5),mx=Math.max(1,...top.map(t=>t[1]));
+$("#fundkpi").innerHTML=`<div class="big">${inr(tot)}</div><div class="small">raised of ${inr(ALERT.target)} target · ${F.length} contribution${F.length===1?"":"s"}${F.length?" · average "+inr(tot/F.length):""} · fund ${ALERT.active?"open":"closed"}</div><div class="bar" style="margin:10px 0 14px"><i style="width:${pct}%"></i></div>${top.length?`<div class="small" style="margin-bottom:6px">Contributions by locality</div>`+top.map(([n,v])=>`<div style="margin-bottom:8px"><div class="row" style="justify-content:space-between"><span>${N[n].name}</span><b>${inr(v)}</b></div><div class="bar"><i style="width:${v/mx*100}%"></i></div></div>`).join(""):'<div class="small">No contributions yet for this alert.</div>'}`}
+$("#alloc").innerHTML=ALLOC.map(a=>`<div style="margin-bottom:10px"><div class="row" style="justify-content:space-between"><span>${a[0]}</span><b>${a[1]}% · ${inr(tot*a[1]/100)}</b></div><div class="bar"><i style="width:${a[1]}%"></i></div></div>`).join("")+`<p class="small">Proposed split (demo). A live version would publish each payout against these heads.</p>`;
+$("#ledger").innerHTML=F.length?`<table class="tbl"><tr><th>Receipt</th><th>Time</th><th>Locality</th><th>Method</th><th>Amount</th></tr>${F.slice(0,8).map(p=>`<tr><td>${esc(p.id)}</td><td>${fdt(p.ts)}</td><td>${N[p.n].name}</td><td>${esc(p.m||"UPI")}</td><td><b>${inr(p.amt)}</b></td></tr>`).join("")}</table>`:'<div class="small">No contributions yet.</div>'}
+async function persistA(a){if(!DB){ALERT=a;return true}
+try{await DB.doc("alerts/current").set(a)}catch(e){$("#aout").textContent="Could not save the alert. Check that you have authority access.";return false}ALERT=a;return true}
+$("#asend").onclick=async()=>{const o=$("#aout"),nodes=$$(".alc:checked").map(c=>+c.value);if(!nodes.length){o.textContent="Select at least one locality.";return}
+const a={id:"AL-"+Date.now().toString(36).toUpperCase(),active:true,nodes,level:$("#alvl").value,msg:$("#amsg").value.trim().slice(0,300)||"Heavy rain and flooding expected. Move to higher ground, avoid flooded roads and follow instructions from local authorities.",amt:+$("#aamt").value,target:Math.max(10000,Math.round(+$("#atgt").value)||500000),ts:Date.now(),rain};
+if(!await persistA(a))return;$("#amsg").value="";o.textContent=`Alert sent to ${nodes.length} locality${nodes.length>1?"ies":""}.`.replace("localityies","localities");render()};
+$("#aclose").onclick=async()=>{if(!ALERT||!ALERT.active)return;if(!await persistA({...ALERT,active:false}))return;$("#aout").textContent="Alert closed. The fund is closed and its ledger stays visible.";render()};
+async function persistP(p){if(!DB){PL.unshift(p);return true}
+if(!UID||!CAN_WRITE){$("#payout").style.display="";$("#payout").innerHTML="<b>You can view the fund but not contribute.</b> Ask the site owner for contributor access.";return false}
+const mine=(PBU.get(UID)||{}).items||[];
+try{await DB.doc("pledges/"+UID).set({items:[...mine,p]})}catch(e){$("#payout").style.display="";$("#payout").innerHTML="<b>Could not record the contribution.</b> Please try again.";return false}
+PBU.set(UID,{items:[...mine,p]});rebuildP();return true}
+$("#pay").onclick=async()=>{const o=$("#payout"),b=$("#pay");o.style.display="";if(!ALERT||!ALERT.active){o.textContent="Contributions open when authorities issue a flood alert.";return}
+const a=Math.round(+$("#camt").value);if(!(a>=1&&a<=500)){o.textContent="Enter an amount between ₹1 and ₹500.";return}
+const p={id:"RF-"+Math.random().toString(36).slice(2,8).toUpperCase(),aid:ALERT.id,amt:a,n:myLoc,ts:Date.now(),m:$("#pm").value};
+b.disabled=true;const ok=await persistP(p);b.disabled=false;if(!ok)return;
+o.innerHTML=`<b>Thank you. ${inr(a)} added to the relief fund.</b><div class="small" style="margin-top:4px">Receipt ${p.id} · ${N[myLoc].name} · ${esc(p.m)} · demo payment, no money moved.</div>`;render()};
+
+/* ---- light / dark mode ---- */
+const themeBtn=$("#theme"),mq=matchMedia("(prefers-color-scheme: dark)");
+const theme=()=>document.documentElement.getAttribute("data-theme")||(mq.matches?"dark":"light");
+function paintTheme(){const d=theme()==="dark";themeBtn.textContent=d?"Light mode":"Dark mode";themeBtn.setAttribute("aria-label",d?"Switch to light mode":"Switch to dark mode")}
+themeBtn.onclick=()=>{const t=theme()==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);try{localStorage.setItem("cg-theme",t)}catch(e){}paintTheme()};
+if(mq.addEventListener)mq.addEventListener("change",paintTheme);paintTheme();
+init();
+</script>
+</body>
+</html>
